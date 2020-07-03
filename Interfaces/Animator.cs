@@ -1,37 +1,33 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class Animator : MonoBehaviour
+namespace UnityAnimatables
 {
-    public List<Animatable> Animatables = new List<Animatable>();
-    public static Animator I { get; private set; }
-
-    private void OnEnable()
+    public class Animator : Singleton<Animator>
     {
-        I = this;
-    }
+        public List<Animatable> Animatables = new List<Animatable>();
 
-    private void Update()
-    {
-        int l = Animatables.Count;
-        if (l == 0) return;
-
-        for (int i = 0; i < l; i++)
+        private void Update()
         {
-            if (Animatables[i].gameObject.activeSelf) Animatables[i].Animate();
+            int l = Animatables.Count;
+            if (l == 0) return;
+
+            for (int i = 0; i < l; i++)
+            {
+                if (Animatables[i].gameObject.activeSelf) Animatables[i].Animate();
+            }
+        }
+
+        internal void Add<T>(T animatable) where T : Animatable
+        {
+            Animatables.Add(animatable);
+        }
+
+        internal void Remove<T>(T animatable) where T : Animatable
+        {
+            Animatables.Remove(animatable);
+            Animatables.TrimExcess();
         }
     }
 
-    internal void Add<T>(T animatable) where T : Animatable
-    {
-        Animatables.Add(animatable);
-    }
-
-    internal void Remove<T>(T animatable) where T : Animatable
-    {
-        Animatables.Remove(animatable);
-        // ToDo write dynamic array
-        Animatables = Animatables.Where(x => x != null).ToList();
-    }
 }
