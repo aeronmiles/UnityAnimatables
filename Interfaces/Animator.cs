@@ -2,7 +2,6 @@
 using System.Linq;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class Animator : MonoBehaviour
 {
     public List<Animatable> Animatables = new List<Animatable>();

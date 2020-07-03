@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityAnimatables
 {
-    [RequireComponent(typeof(CachedTransforms))]
+    [RequireComponent(typeof(Cached))]
     public class Recoil : Animatable
     {
         public float Strength = 1f;
@@ -11,12 +11,12 @@ namespace UnityAnimatables
         public AnimationCurve StrengthAtDistance = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         Rigidbody rb;
-        CachedTransforms cached;
+        Cached cached;
         private void OnEnable()
         {
             Animator.I.Add(this);
             rb = GetComponent<Rigidbody>();
-            cached = GetComponent<CachedTransforms>();
+            cached = GetComponent<Cached>();
             cached.Cache();
         }
 

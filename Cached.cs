@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnityAnimatables
 {
-    public class CachedTransforms : MonoBehaviour
+    public class Cached : MonoBehaviour
     {
         public Vector3 Position;
         public Quaternion Rotation;

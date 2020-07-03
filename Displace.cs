@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace UnityAnimatables
 {
-    [RequireComponent(typeof(CachedTransforms))]
+    [RequireComponent(typeof(Cached))]
     public class Displace : Animatable
     {
         public float Strength = 1f;
@@ -20,13 +20,13 @@ namespace UnityAnimatables
 
         Rigidbody rb;
         Vector3 normal;
-        CachedTransforms cached;
+        Cached cached;
 
         private void OnEnable()
         {
             rb = GetComponent<Rigidbody>();
             Animator.I.Add(this);
-            cached = GetComponent<CachedTransforms>();
+            cached = GetComponent<Cached>();
             cached.Cache();
         }
 

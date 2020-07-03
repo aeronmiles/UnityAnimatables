@@ -2,18 +2,18 @@
 
 namespace UnityAnimatables
 {
-    [RequireComponent(typeof(CachedTransforms))]
+    [RequireComponent(typeof(Cached))]
     public class Average : Animatable
     {
         public float Rate = 1f;
 
         public XYZBool Position;
 
-        CachedTransforms cache;
+        Cached cache;
         private void OnEnable()
         {
             Animator.I.Add(this);
-            cache = GetComponent<CachedTransforms>();
+            cache = GetComponent<Cached>();
         }
 
         private void OnDisable()
