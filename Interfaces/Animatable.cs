@@ -46,5 +46,28 @@ namespace UnityAnimatables
             }
             return avg / l;
         }
+
+        public static Vector3 AverageRotation(this HashSet<Animatable> animatables)
+        {
+            float x = 0f, y = 0f, z = 0f, w = 0f;
+            foreach (var a in animatables)
+            {
+                var q = a.transform.rotation;
+                x += q.x; y += q.y; z += q.z; w += q.w;
+            }
+            float k = 1.0f / Mathf.Sqrt(x * x + y * y + z * z + w * w);
+            return new Quaternion(x * k, y * k, z * k, w * k).eulerAngles;
+        }
+
+        public static Vector3 AverageScale(this HashSet<Animatable> animatables)
+        {
+            int l = animatables.Count;
+            Vector3 avg = float3.zero;
+            foreach (var a in animatables)
+            {
+                avg += a.transform.localScale;
+            }
+            return avg / l;
+        }
     }
 }

@@ -8,12 +8,12 @@ namespace UnityAnimatables
         public float Rate = 1f;
 
         public XYZBool Position;
+        public XYZBool Rotation;
+        public XYZBool Scale;
 
-        Cached cache;
         private void OnEnable()
         {
             Animator.I.Add(this);
-            cache = GetComponent<Cached>();
         }
 
         private void OnDisable()
@@ -26,12 +26,31 @@ namespace UnityAnimatables
             if (Position.Any)
             {
                 var p = Animator.I.Animatables.AveragePosition();
-                p.x = Position.X ? p.x : 0f;
-                p.y = Position.Y ? p.y : 0f;
-                p.z = Position.Z ? p.z : 0f;
+                p.x = Position.X ? p.x : transform.position.x;
+                p.y = Position.Y ? p.y : transform.position.y;
+                p.z = Position.Z ? p.z : transform.position.z;
 
-                p += cache.Position;
                 transform.position = Vector3.Slerp(transform.position, p, Time.deltaTime * Rate);
+            }
+
+            if (Rotation.Any)
+            {
+                var r = Animator.I.Animatables.AverageRotation();
+                r.x = Rotation.X ? r.x : transform.rotation.eulerAngles.x;
+                r.y = Rotation.Y ? r.y : transform.rotation.eulerAngles.y;
+                r.z = Rotation.Z ? r.z : transform.rotation.eulerAngles.z;
+
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(r), Time.deltaTime * Rate);
+            }
+
+            if (Scale.Any)
+            {
+                var s = Animator.I.Animatables.AverageScale();
+                s.x = Scale.X ? s.x : transform.localScale.x;
+                s.y = Scale.Y ? s.y : transform.localScale.y;
+                s.z = Scale.Z ? s.z : transform.localScale.z;
+
+                transform.localScale = Vector3.Slerp(transform.localScale, s, Time.deltaTime * Rate);
             }
         }
     }
