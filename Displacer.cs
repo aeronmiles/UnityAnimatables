@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace UnityAnimatables
 {
-    [RequireComponent(typeof(Cached))]
-    public class Displacer : Animatable
+    public class Displacer : MonoBehaviour
     {
         public Texture2D HeightMap = null;
         public Texture2D NormalMap = null;
@@ -23,35 +21,15 @@ namespace UnityAnimatables
         [Header("Debugging")]
         [SerializeField] bool debugNormal = true;
 
-        HashSet<Displace> Targets = new HashSet<Displace>();
 
         Vector3[] normals;
 
-        private void OnEnable()
+        public void Update()
         {
-            Animator.I.Add(this);
-        }
-
-        private void OnDisable()
-        {
-            Animator.I.Remove(this);
-        }
-
-        public void Add(Displace d)
-        {
-            Targets.Add(d);
-            normals = new Vector3[Targets.Count];
-        }
-
-        public void Remove(Displace d)
-        {
-            Targets.Remove(d);
-        }
-
-        public override void Animate()
-        {
+            if (Displace.Displacables.Count != normals.Length) normals = new Vector3[Displace.Displacables.Count];
+            
             int i = 0;
-            foreach (var t in Targets)
+            foreach (var t in Displace.Displacables)
             {
                 var p = t.RB.position;
                 var o = OffsetRate * Time.time;
@@ -83,7 +61,7 @@ namespace UnityAnimatables
             if (debugNormal)
             {
                 int i = 0;
-                foreach (var t in Targets)
+                foreach (var t in Displace.Displacables)
                 {
                     Gizmos.color = Color.magenta;
                     Gizmos.DrawLine(t.transform.position, t.transform.position + normals[i]);

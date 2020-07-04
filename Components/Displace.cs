@@ -1,18 +1,19 @@
 
+using System.Collections.Generic;
+
 namespace UnityAnimatables
 {
     public class Displace : AnimatableComponents
     {
+        public static HashSet<Displace> Displacables = new HashSet<Displace>();
         private void OnEnable()
         {
-            var ds = FindObjectsOfType<Displacer>();
-            foreach (var d in ds) d.Add(this);
+            Displacables.Add(this);
         }
 
         private void OnDisable()
         {            
-            var ds = FindObjectsOfType<Displacer>();
-            foreach (var d in ds) d.Remove(this);
+            Displacables.Remove(this);
         }
     }
 }
