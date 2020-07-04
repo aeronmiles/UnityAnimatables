@@ -22,7 +22,7 @@ namespace UnityAnimatables
         [SerializeField] bool debugNormal = true;
 
 
-        Vector3[] normals;
+        Vector3[] normals = new Vector3[0];
 
         public void Update()
         {
