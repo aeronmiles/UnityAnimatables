@@ -7,7 +7,7 @@ namespace UnityAnimatables
     public class GridSpawner : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] GameObject pyramid = null;
+        [SerializeField] GameObject prototype = null;
 
         [Header("Grid")]
         [SerializeField] bool randomizeSeed = true;
@@ -15,8 +15,10 @@ namespace UnityAnimatables
         [SerializeField] int countx = 8;
         [SerializeField] int countz = 5;
         [SerializeField] Vector2 gridSize = new Vector3(2f, 1.2f);
+        
         [Header("Randomize")]
         [SerializeField] Vector3 randPosition = new Vector3(0.1f, 0.1f, 0.1f);
+        [SerializeField] Vector3 positionStepSize = new Vector3(0.01f, 0.01f, 0.01f);
         [SerializeField] Vector3 randRotation = new Vector3(10f, 360f, 10f);
         [SerializeField] float3 angleStepSize = new Vector3(15f, 15f, 15f);
 
@@ -26,26 +28,31 @@ namespace UnityAnimatables
             seed = randomizeSeed ? UnityEngine.Random.Range(1, int.MaxValue) : seed;
             int count = countx * countz;
             Vector3[] gPositions = new Vector3[count];
-            Quaternion[] rRotations = new Quaternion[count].RandomAngleStep(seed, angleStepSize).MultiplyEuler(randRotation / 360f);
+            Quaternion[] rRotations = new Vector3[count].RandomRange(seed, -randRotation, randRotation)
+            .ToNearest(angleStepSize).ToQuaternion();
 
-            Vector3 increments = new Vector3(gridSize.x / countx, 0f, gridSize.y / countz);
-            Vector3 offset = new Vector3(gridSize.x - (gridSize.x * 0.5f), 0f, gridSize.y - (gridSize.y * 0.5f));
+            Vector2 increment = gridSize / new Vector2(countx, countz);
+            Vector2 offset = (gridSize + increment) * 0.5f;
             int ind = 0;
             for (int i = 0; i < countx; i++)
             {
                 for (int j = 0; j < countz; j++)
                 {
-                    gPositions[ind++] = new Vector3(((i + 1) * increments.x) - offset.x - (0.5f * increments.x),
-                    0f,
-                    ((j + 1) * increments.z) - offset.z - (0.5f * increments.z));
+                    gPositions[ind++] = new Vector3(
+                        ((i + 1) * increment.x) - offset.x,
+                        0f,
+                        ((j + 1) * increment.y) - offset.y
+                    );
                 }
             }
 
-            Vector3[] rPositions = new Vector3[count].Randomize(seed).Multiply(randPosition);
+            Vector3 p = transform.position;
+            Vector3[] rPositions = new Vector3[count].RandomRange(seed, -randPosition, randPosition)
+            .ToNearest(positionStepSize);
             for (int i = 0; i < count; i++)
             {
-                var o = Instantiate(pyramid, gPositions[i] + rPositions[i] + transform.position, rRotations[i], transform);
-                o.name = i.ToString();
+                var o = Instantiate(prototype, p + gPositions[i] + rPositions[i], rRotations[i], transform);
+                o.name = prototype.name + i;
             }
         }
 

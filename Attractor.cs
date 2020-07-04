@@ -43,7 +43,7 @@ namespace UnityAnimatables
 
         private void OnValidate()
         {
-            if (Radius <= 0f) Radius += 0.000000000000000001f;
+            Radius = math.max(Radius, 0.000000000000000001f);
         }
 
         void OnDrawGizmosSelected()

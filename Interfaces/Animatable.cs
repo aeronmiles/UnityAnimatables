@@ -2,21 +2,49 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-public abstract class Animatable : MonoBehaviour
+namespace UnityAnimatables
 {
-    public abstract void Animate();
-}
-
-public static class AnimatableExt
-{
-    public static Vector3 AveragePosition(this List<Animatable> animatables)
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Cached))]
+    public abstract class AnimatableComponents : MonoBehaviour
     {
-        int l = animatables.Count;
-        Vector3 avg = float3.zero;
-        for (int i = 0; i < l; i++)
+        Cached cached = null;
+        public Cached Cached
         {
-            avg += animatables[i].transform.position;
+            get
+            {
+                if (cached == null) cached = GetComponent<Cached>();
+                return cached;
+            }
         }
-        return avg / l;
+
+        Rigidbody _rb;
+        public Rigidbody RB
+        {
+            get
+            {
+                if (_rb == null) _rb = GetComponent<Rigidbody>();
+                return _rb;
+            }
+        }
+    }
+
+    public abstract class Animatable : AnimatableComponents
+    {
+        public abstract void Animate();
+    }
+
+    public static class AnimatableExt
+    {
+        public static Vector3 AveragePosition(this HashSet<Animatable> animatables)
+        {
+            int l = animatables.Count;
+            Vector3 avg = float3.zero;
+            foreach (var a in animatables)
+            {
+                avg += a.transform.position;
+            }
+            return avg / l;
+        }
     }
 }

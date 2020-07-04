@@ -1,21 +1,17 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace UnityAnimatables
 {
     public class Animator : Singleton<Animator>
     {
-        public List<Animatable> Animatables = new List<Animatable>();
+        public HashSet<Animatable> Animatables = new HashSet<Animatable>();
 
         private void Update()
         {
             int l = Animatables.Count;
             if (l == 0) return;
-
-            for (int i = 0; i < l; i++)
-            {
-                if (Animatables[i].gameObject.activeSelf) Animatables[i].Animate();
-            }
+            
+            foreach (var a in Animatables) if (a.gameObject.activeSelf) a.Animate();
         }
 
         internal void Add<T>(T animatable) where T : Animatable
