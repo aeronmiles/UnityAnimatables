@@ -1,16 +1,11 @@
-﻿using UnityEngine;
-
-namespace UnityAnimatables
+﻿namespace UnityAnimatables
 {
-    public class LimitVelocity : Animatable
+    public class LimitVelocity : Animatable, IAnimate
     {
         public float MaxVelocity = 1f;
 
-        Rigidbody rb;
-
         private void OnEnable()
         {
-            rb = GetComponent<Rigidbody>();
             Animator.I.Add(this);
         }
 
@@ -18,10 +13,10 @@ namespace UnityAnimatables
         {
             Animator.I.Remove(this);
         }
-
-        public override void Animate()
+        
+        public void Animate()
         {
-            rb.velocity = rb.velocity.magnitude > MaxVelocity ? rb.velocity.normalized * MaxVelocity : rb.velocity;
+            RB.velocity = RB.velocity.magnitude > MaxVelocity ? RB.velocity.normalized * MaxVelocity : RB.velocity;
         }
     }
 }

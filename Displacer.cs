@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace UnityAnimatables
 {
+    [ExecuteInEditMode]
     public class Displacer : MonoBehaviour
     {
         public Texture2D HeightMap = null;
@@ -26,17 +27,24 @@ namespace UnityAnimatables
 
         public void Update()
         {
-            if (Displace.Displacables.Count != normals.Length) normals = new Vector3[Displace.Displacables.Count];
-            
+            var animatables = Animator.I.GetAll<Displace>();
+            if (animatables.Count != normals.Length) normals = new Vector3[animatables.Count];
+
+            Vector2 o = new Vector2(transform.position.x + Offset.x, transform.position.z + Offset.z) + (OffsetRate * Time.time);
+            float w = HeightMap.width;
+            float h = HeightMap.height;
             int i = 0;
-            foreach (var t in Displace.Displacables)
+            foreach (var t in animatables)
             {
-                var p = t.RB.position;
-                var o = OffsetRate * Time.time;
-                int x = Mathf.FloorToInt((p.x + Offset.x + o.x) / Size.x * HeightMap.width);
-                int y = Mathf.FloorToInt((p.z + Offset.z + o.y) / Size.z * HeightMap.height);
+                var p = t.transform.position;
+                int x = Mathf.FloorToInt((p.x + o.x) / Size.x * w);
+                int y = Mathf.FloorToInt((p.z + o.y) / Size.z * h);
                 float targetHeight = (HeightMap.GetPixel(x, y).grayscale * Size.y) + Offset.y;
-                Vector3 force = new Vector3(0f, (targetHeight + t.Cached.Position.y) - p.y, 0f) * Time.deltaTime * DisplaceStrength;
+                Vector3 force = new Vector3(
+                    0f,
+                    (targetHeight + t.Cached.Position.y) - p.y,
+                    0f
+                    ) * Time.deltaTime * DisplaceStrength;
                 t.RB.AddForce(force);
 
                 normals[i] = (NormalMap.GetPixel(x, y).rgb() * 2f) - Vector3.one;
@@ -47,7 +55,6 @@ namespace UnityAnimatables
                 t.RB.MoveRotation(Quaternion.Slerp(t.transform.rotation, toRotation, RotationRate * Time.deltaTime));
                 i++;
             }
-
         }
 
         private void OnDrawGizmosSelected()
@@ -60,8 +67,10 @@ namespace UnityAnimatables
         {
             if (debugNormal)
             {
+                var animatables = Animator.I.GetAll<Displace>();
+
                 int i = 0;
-                foreach (var t in Displace.Displacables)
+                foreach (var t in animatables)
                 {
                     Gizmos.color = Color.magenta;
                     Gizmos.DrawLine(t.transform.position, t.transform.position + normals[i]);

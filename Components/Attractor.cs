@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace UnityAnimatables
 {
-    public class Attractor : Animatable
+    public class Attractor : Animatable, IAnimate
     {
         public float Strength = 1f;
         public float Radius = 1f;
@@ -11,9 +11,9 @@ namespace UnityAnimatables
         [SerializeField] AnimationCurve StrengthAtDistance = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         Collider[] localObjs;
+
         private void OnEnable()
         {
-            localObjs = new Collider[maxCount];
             Animator.I.Add(this);
         }
 
@@ -21,8 +21,8 @@ namespace UnityAnimatables
         {
             Animator.I.Remove(this);
         }
-
-        public override void Animate()
+        
+        public void Animate()
         {
             for (int i = 0; i < maxCount; i++)
             {

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UnityAnimatables
 {
     [RequireComponent(typeof(Cached))]
-    public class Recoil : Animatable
+    public class Recoil : Animatable, IAnimate
     {
         public float Strength = 1f;
         public float Radius = 1f;
@@ -20,12 +20,7 @@ namespace UnityAnimatables
             cached.Cache();
         }
 
-        private void OnDisable()
-        {
-            Animator.I.Remove(this);
-        }
-
-        public override void Animate()
+        public void Animate()
         {
             Vector3 pos = transform.position;
             Quaternion rot = rb.rotation;
