@@ -33,8 +33,7 @@ namespace UnityAnimatables
                 return _rb;
             }
         }
-        
-        public static Animator Animator;
+
         public HashSet<Animatable> GetAll<T>() where T : Animatable => Animator.I.GetAll<T>();
     }
 }

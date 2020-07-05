@@ -15,6 +15,7 @@ namespace UnityAnimatables
         private void OnEnable()
         {
             Animator.I.Add(this);
+            localObjs = new Collider[maxCount];
         }
 
         private void OnDisable()
@@ -24,10 +25,8 @@ namespace UnityAnimatables
         
         public void Animate()
         {
-            for (int i = 0; i < maxCount; i++)
-            {
-                localObjs[i] = null;
-            }
+            for (int i = 0; i < maxCount; i++) localObjs[i] = null;
+
             Physics.OverlapSphereNonAlloc(transform.position, Radius, localObjs);
             float3 p = transform.position;
             for (int i = 0; i < maxCount; i++)
@@ -44,6 +43,7 @@ namespace UnityAnimatables
         private void OnValidate()
         {
             Radius = math.max(Radius, 0.000000000000000001f);
+            localObjs = new Collider[maxCount];
         }
 
         void OnDrawGizmosSelected()

@@ -10,26 +10,22 @@ namespace UnityAnimatables
         public float Radius = 1f;
         public AnimationCurve StrengthAtDistance = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-        Rigidbody rb;
-        Cached cached;
         private void OnEnable()
         {
             Animator.I.Add(this);
-            rb = GetComponent<Rigidbody>();
-            cached = GetComponent<Cached>();
-            cached.Cache();
+            Cached.Cache();
         }
 
         public void Animate()
         {
             Vector3 pos = transform.position;
-            Quaternion rot = rb.rotation;
-            float s = StrengthAtDistance.Evaluate(math.distance(cached.Position, pos) / Radius);
-            Vector3 f = math.normalize((cached.Position - pos)) * s * Time.deltaTime * Strength;
-            rb.AddForce(f);
+            Quaternion rot = RB.rotation;
+            float s = StrengthAtDistance.Evaluate(math.distance(Cached.Position, pos) / Radius);
+            Vector3 f = math.normalize((Cached.Position - pos)) * s * Time.deltaTime * Strength;
+            RB.AddForce(f);
 
-            quaternion r = Quaternion.Slerp(rb.rotation, cached.Rotation, s * Time.deltaTime * Strength);
-            rb.MoveRotation(r);
+            quaternion r = Quaternion.Slerp(RB.rotation, Cached.Rotation, s * Time.deltaTime * Strength);
+            RB.MoveRotation(r);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace UnityAnimatables
         {
             foreach (var k in Animatables.Keys)
             {
-                if (k is IAnimate)
+                if (typeof(IAnimate).IsAssignableFrom(k))
                 {
                     foreach (var a in Animatables[k])
                     {
@@ -39,7 +39,7 @@ namespace UnityAnimatables
         public void Remove<T>(T animatable) where T : Animatable
         {
             if (!Animatables.ContainsKey(typeof(T))) return;
-            
+
             Animatables[typeof(T)].Remove(animatable);
             Animatables[typeof(T)].TrimExcess();
             all.Remove(animatable);
