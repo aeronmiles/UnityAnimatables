@@ -16,7 +16,7 @@ namespace UnityAnimatables
 
 
         Rigidbody _rb;
-        Rigidbody rb
+        Rigidbody RB
         {
             get
             {
@@ -35,8 +35,8 @@ namespace UnityAnimatables
             Position = transform.position;
             Rotation = transform.rotation;
             Scale = transform.localScale;
-            Velocity = rb.velocity;
-            AngularVelocity = rb.angularVelocity;
+            Velocity = RB.velocity;
+            AngularVelocity = RB.angularVelocity;
         }
     }
 }

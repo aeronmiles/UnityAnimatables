@@ -10,7 +10,7 @@ namespace UnityAnimatables
         [SerializeField] int maxCount = 20;
         [SerializeField] AnimationCurve StrengthAtDistance = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-        Collider[] localObjs;
+        Collider[] localObjs = null;
 
         private void OnEnable()
         {
