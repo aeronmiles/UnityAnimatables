@@ -5,12 +5,12 @@ namespace UnityAnimatables
     {
         private void OnEnable()
         {
-            Animator.I.Add(this);
+            AnimController.I.Add(this);
         }
 
         private void OnDisable()
         {
-            Animator.I.Remove(this);
+            AnimController.I.Remove(this);
         }
     }
 }

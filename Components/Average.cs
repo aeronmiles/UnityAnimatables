@@ -13,19 +13,19 @@ namespace UnityAnimatables
         
         private void OnEnable()
         {
-            Animator.I.Add(this);
+            AnimController.I.Add(this);
         }
 
         private void OnDisable()
         {
-            Animator.I.Remove(this);
+            AnimController.I.Remove(this);
         }
         
         public void Animate()
         {
             // if (Position.Any)
             // {
-            //     var p = Animator.I.Animatables.AveragePosition();
+            //     var p = AnimController.I.Animatables.AveragePosition();
             //     p.x = Position.X ? p.x : transform.position.x;
             //     p.y = Position.Y ? p.y : transform.position.y;
             //     p.z = Position.Z ? p.z : transform.position.z;
@@ -35,7 +35,7 @@ namespace UnityAnimatables
 
             // if (Rotation.Any)
             // {
-            //     var r = Animator.I.Animatables.AverageRotation();
+            //     var r = AnimController.I.Animatables.AverageRotation();
             //     r.x = Rotation.X ? r.x : transform.rotation.eulerAngles.x;
             //     r.y = Rotation.Y ? r.y : transform.rotation.eulerAngles.y;
             //     r.z = Rotation.Z ? r.z : transform.rotation.eulerAngles.z;
@@ -45,7 +45,7 @@ namespace UnityAnimatables
 
             // if (Scale.Any)
             // {
-            //     var s = Animator.I.Animatables.AverageScale();
+            //     var s = AnimController.I.Animatables.AverageScale();
             //     s.x = Scale.X ? s.x : transform.localScale.x;
             //     s.y = Scale.Y ? s.y : transform.localScale.y;
             //     s.z = Scale.Z ? s.z : transform.localScale.z;

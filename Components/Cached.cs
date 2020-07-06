@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace UnityAnimatables
 {
+    [ExecuteInEditMode]
     [RequireComponent(typeof(Rigidbody))]
     public class Cached : MonoBehaviour
     {

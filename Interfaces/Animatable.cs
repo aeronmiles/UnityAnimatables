@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UnityAnimatables
 {
@@ -14,6 +13,7 @@ namespace UnityAnimatables
 
     public abstract class Animatable : MonoBehaviour
     {
+        public bool Enabled = true;
         Cached cached = null;
         public Cached Cached
         {
@@ -33,7 +33,5 @@ namespace UnityAnimatables
                 return _rb;
             }
         }
-
-        public HashSet<Animatable> GetAll<T>() where T : Animatable => Animator.I.GetAll<T>();
     }
 }

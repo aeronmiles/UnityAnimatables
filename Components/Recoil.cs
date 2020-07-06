@@ -12,8 +12,13 @@ namespace UnityAnimatables
 
         private void OnEnable()
         {
-            Animator.I.Add(this);
+            AnimController.I.Add(this);
             Cached.Cache();
+        }
+
+        private void OnDisable()
+        {
+            AnimController.I.Remove(this);
         }
 
         public void Animate()

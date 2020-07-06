@@ -39,5 +39,15 @@ namespace UnityAnimatables
             }
             return avg / l;
         }
+
+        public static void Cache(this HashSet<Animatable> animatables)
+        {
+            foreach (var a in animatables) a.Cached.Cache();
+        }
+
+        public static void Enable(this HashSet<Animatable> animatables, bool enable)
+        {
+            foreach (var a in animatables) a.Enabled = enable;
+        }
     }
 }

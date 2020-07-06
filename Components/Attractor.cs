@@ -14,13 +14,13 @@ namespace UnityAnimatables
 
         private void OnEnable()
         {
-            Animator.I.Add(this);
+            AnimController.I.Add(this);
             localObjs = new Collider[maxCount];
         }
 
         private void OnDisable()
         {
-            Animator.I.Remove(this);
+            AnimController.I.Remove(this);
         }
         
         public void Animate()

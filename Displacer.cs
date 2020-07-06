@@ -27,16 +27,21 @@ namespace UnityAnimatables
 
         public void Update()
         {
-            var animatables = Animator.I.GetAll<Displace>();
+            var animatables = AnimController.I.Get<Displace>();
             if (animatables.Count != normals.Length) normals = new Vector3[animatables.Count];
 
             Vector2 o = new Vector2(transform.position.x + Offset.x, transform.position.z + Offset.z) + (OffsetRate * Time.time);
-            float w = HeightMap.width;
-            float h = HeightMap.height;
+            int w = HeightMap.width;
+            int h = HeightMap.height;
+            int nW = NormalMap.width;
+            int nH = NormalMap.height;
+
             int i = 0;
             foreach (var t in animatables)
             {
                 var p = t.transform.position;
+
+                // Add displacement force
                 int x = Mathf.FloorToInt((p.x + o.x) / Size.x * w);
                 int y = Mathf.FloorToInt((p.z + o.y) / Size.z * h);
                 float targetHeight = (HeightMap.GetPixel(x, y).grayscale * Size.y) + Offset.y;
@@ -47,12 +52,17 @@ namespace UnityAnimatables
                     ) * Time.deltaTime * DisplaceStrength;
                 t.RB.AddForce(force);
 
+                // Add normal rotation
+                x = Mathf.FloorToInt((p.x + o.x) / Size.x * nW);
+                y = Mathf.FloorToInt((p.z + o.y) / Size.z * nH);
                 normals[i] = (NormalMap.GetPixel(x, y).rgb() * 2f) - Vector3.one;
                 normals[i].x = normals[i].y;
                 normals[i].y = math.max(2f - (NormalStrength * 2f), 0.1f);
                 Quaternion toRotation = Quaternion.FromToRotation(Vector3.up, normals[i]);
                 toRotation *= Quaternion.Euler(Vector3.up * t.Cached.Rotation.eulerAngles.y);
-                t.RB.MoveRotation(Quaternion.Slerp(t.transform.rotation, toRotation, RotationRate * Time.deltaTime));
+                t.RB.MoveRotation(
+                    Quaternion.Slerp(t.transform.rotation, toRotation, RotationRate * Time.deltaTime)
+                    );
                 i++;
             }
         }
@@ -67,7 +77,7 @@ namespace UnityAnimatables
         {
             if (debugNormal)
             {
-                var animatables = Animator.I.GetAll<Displace>();
+                var animatables = AnimController.I.Get<Displace>();
 
                 int i = 0;
                 foreach (var t in animatables)
