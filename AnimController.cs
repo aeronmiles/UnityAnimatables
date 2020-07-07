@@ -19,7 +19,7 @@ namespace UnityAnimatables
                 {
                     foreach (var a in Animatables.Set[k])
                     {
-                        if (a.Enabled) (a as IAnimate).Animate();
+                        if (a.Enabled) ((IAnimate)a).Animate();
                     }
                 }
             }

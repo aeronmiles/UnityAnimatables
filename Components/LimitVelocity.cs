@@ -1,4 +1,5 @@
-﻿namespace UnityAnimatables
+﻿
+namespace UnityAnimatables
 {
     public class LimitVelocity : Animatable, IAnimate
     {
