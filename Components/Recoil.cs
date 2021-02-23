@@ -27,7 +27,7 @@ namespace UnityAnimatables
             Quaternion rot = RB.rotation;
             float s = StrengthAtDistance.Evaluate(math.distance(Cached.Position, pos) / Radius);
             Vector3 f = math.normalize((Cached.Position - pos)) * s * Time.deltaTime * Strength;
-            RB.AddForce(f);
+            if (f.magnitude > 0f) RB.AddForce(f);
 
             quaternion r = Quaternion.Slerp(RB.rotation, Cached.Rotation, s * Time.deltaTime * Strength);
             RB.MoveRotation(r);

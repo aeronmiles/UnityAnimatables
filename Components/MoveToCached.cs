@@ -21,14 +21,22 @@ namespace UnityAnimatables
             AnimController.I.Remove(this);
         }
 
+        Vector3 pos;
+        Quaternion rot;
+        Vector3 scale;
         public void Animate()
         {
+            if (x == 0f)
+            {
+                pos = transform.position;
+                rot = transform.rotation;
+                scale = transform.localScale;
+            }
             x += Time.deltaTime / Period;
             float a = Rate.Evaluate(x);
-            Debug.Log(x + " " + a);
-            transform.position = Vector3.Lerp(transform.position, Cached.Position, a);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Cached.Rotation, a);
-            transform.localScale = Vector3.Lerp(transform.localScale, Cached.Scale, a);
+            transform.position = Vector3.Lerp(pos, Cached.Position, a);
+            transform.rotation = Quaternion.Lerp(rot, Cached.Rotation, a);
+            transform.localScale = Vector3.Lerp(scale, Cached.Scale, a);
         }
     }
 }

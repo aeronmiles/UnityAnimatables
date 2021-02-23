@@ -11,7 +11,7 @@ namespace UnityAnimatables
         public void Add<T>(T item) where T : Animatable => Animatables.Add(item);
         public void Remove<T>(T item) where T : Animatable => Animatables.Remove(item);
 
-        private void Update()
+        private void FixedUpdate()
         {
             foreach (var k in Animatables.Set.Keys)
             {

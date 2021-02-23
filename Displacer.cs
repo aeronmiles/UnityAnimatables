@@ -25,7 +25,7 @@ namespace UnityAnimatables
 
         Vector3[] normals = new Vector3[0];
 
-        public void Update()
+        public void FixedUpdate()
         {
             var animatables = AnimController.I.Get<Displace>();
             if (animatables.Count != normals.Length) normals = new Vector3[animatables.Count];
@@ -49,7 +49,7 @@ namespace UnityAnimatables
                     0f,
                     (targetHeight + t.Cached.Position.y) - p.y,
                     0f
-                    ) * Time.deltaTime * DisplaceStrength;
+                    ) * DisplaceStrength;
                 t.RB.AddForce(force);
 
                 // Add normal rotation
